@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('product_id');
-            $table->string('product_name', 100);
+        Schema::create('customers', function (Blueprint $table) {
+            $table->bigIncrements('customer_id');
+            $table->string('name', 100);
+            $table->string('image', 100);
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('products');
+        Schema::drop('customers');
     }
 };
