@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Customers extends Model
+class Activities extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $primaryKey = 'customer_id';
+    protected $primaryKey = 'activity_id';
 }
