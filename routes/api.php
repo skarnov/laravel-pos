@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\Customer;
+use App\Http\Controllers\Login;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +18,9 @@ use App\Http\Controllers\Customer;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('saveProduct', [Product::class, 'saveProduct']);
 Route::get('manageProduct', [Product::class, 'manageProduct']);
 Route::get('searchProduct/{key}', [Product::class, 'searchProduct']);
-
-
-
 
 Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
 Route::get('manageCustomer', [Customer::class, 'manageCustomer']);
