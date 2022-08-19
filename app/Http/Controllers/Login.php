@@ -69,9 +69,20 @@ class Login extends Controller
         ]);
     }
 
+    public function me()
+    {
+        return response()->json($this->guard()->user());
+    }
+
     public function logout()
     {
-        Auth::logout();
-        return Redirect('login');
+        $this->guard()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh()
+    {
+        return $this->respondWithToken($this->guard()->refresh());
     }
 }
