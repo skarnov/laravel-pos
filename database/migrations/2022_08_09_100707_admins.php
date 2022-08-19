@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('admin_sex', array('male', 'female'));
             $table->string('admin_email', 100);
             $table->string('admin_password', 255);
+            $table->rememberToken();
             $table->string('admin_image', 100)->nullable();
             $table->string('admin_mobile', 20)->nullable();
             $table->text('admin_address')->nullable();

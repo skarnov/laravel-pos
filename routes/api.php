@@ -18,6 +18,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
+Route::post('checkLogin', [Login::class, 'authenticate']);
+
+
+
 Route::post('saveProduct', [Product::class, 'saveProduct']);
 Route::get('manageProduct', [Product::class, 'manageProduct']);
 Route::get('searchProduct/{key}', [Product::class, 'searchProduct']);
