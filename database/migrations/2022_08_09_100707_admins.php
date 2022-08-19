@@ -14,18 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->smallIncrements('admin_id');
+            $table->smallIncrements('id');
             $table->string('first_name', 100);
             $table->string('last_name', 100)->nullable();
             $table->string('user_name', 50);
-            $table->enum('admin_sex', array('male', 'female'));
-            $table->string('admin_email', 100);
-            $table->string('admin_password', 255);
+            $table->enum('sex', array('male', 'female'));
+            $table->string('email', 100);
+            $table->string('password', 255);
             $table->rememberToken();
-            $table->string('admin_image', 100)->nullable();
-            $table->string('admin_mobile', 20)->nullable();
-            $table->text('admin_address')->nullable();
-            $table->enum('admin_status', array('active', 'inactive'));
+            $table->string('image', 100)->nullable();
+            $table->string('mobile', 20)->nullable();
+            $table->text('address')->nullable();
+            $table->enum('status', array('active', 'inactive'));
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();

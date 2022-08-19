@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\Customer;
 use App\Http\Controllers\Login;
-use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,18 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::post('checkLogin', [Login::class, 'authenticate']);
+Route::post('registration', [Login::class, 'registration']);
+Route::post('login', [Login::class, 'login']);
+
+
+
+// Route::post('login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => 'api',], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']);
+    Route::post('me', [AuthController::class, 'me']);
+});
 
 
 

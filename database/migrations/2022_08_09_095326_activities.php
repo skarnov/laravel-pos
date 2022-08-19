@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->bigIncrements('activity_id');
+            $table->bigIncrements('id');
             $table->smallInteger('fk_admin_id')->nullable();
-            $table->enum('activity_type', array('success', 'warning', 'error'));
-            $table->string('activity_name', 150);
+            $table->enum('type', array('success', 'warning', 'error'));
+            $table->string('name', 150);
             $table->string('ip_address', 45)->nullable();
             $table->string('visitor_country', 50)->nullable();
             $table->string('visitor_state', 100)->nullable();

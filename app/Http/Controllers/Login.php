@@ -4,24 +4,74 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Admins;
 
 class Login extends Controller
 {
-    public function authenticate(Request $request)
+    public function __construct()
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    public function guard()
+    {
+        return Auth::guard();
+    }
 
-            return redirect()->intended('dashboard');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if ($token = $this->guard()->attempt($credentials)) {
+            return $this->respondWithToken($token);
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'user' => auth()->user()
+        ]);
+    }
+
+    public function registration(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'user_name' => 'required',
+            'sex' => 'required',
+            'email' => 'required|email|unique:admins',
+            'password' => 'required|min:6',
+            'status' => 'required',
+        ]);
+
+        $data = $request->all();
+        return $this->create($data);
+    }
+
+    public function create(array $data)
+    {
+        return Admins::create([
+            'first_name' => $data['first_name'],
+            'user_name' => $data['user_name'],
+            'sex' => $data['sex'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'status' => $data['status'],
+            'created_time' => current_time(),
+            'created_date' => current_date(),
+        ]);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return Redirect('login');
     }
 }
