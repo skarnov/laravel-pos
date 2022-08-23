@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Activities;
 use App\Models\Admins;
 
 class Login extends Controller
@@ -21,9 +22,39 @@ class Login extends Controller
 
     public function login(Request $request)
     {
+
+
+        // $activities = new Activities;
+
+        // $activities->fk_admin_id = '1';
+        // $activities->type = 'success';
+        // $activities->name = 'Login Success';
+        // $activities->ip_address = '192.178.01.02';
+        // $activities->visitor_country = 'Bangladesh';
+        // $activities->visitor_state = 'Khulna';
+        // $activities->visitor_city = 'Magura';
+        // $activities->visitor_address = 'Goal Bathan';
+        // $activities->created_time = current_time();
+        // $activities->created_date = current_date();
+        // $activities->created_by = '1';
+
+        // $activities->save();
+
+
+
         $credentials = $request->only('email', 'password');
 
         if ($token = $this->guard()->attempt($credentials)) {
+
+
+
+
+            // $user_info = $this->me();
+
+
+            // debug($user_info);
+
+
             return $this->respondWithToken($token);
         }
 

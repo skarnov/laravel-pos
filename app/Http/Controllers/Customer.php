@@ -20,7 +20,7 @@ class Customer extends Controller
 
     public function manageCustomer()
     {
-        return Customers::orderByDesc('customer_id')->get();
+        return Customers::orderByDesc('id')->get();
     }
 
     public function selectCustomer($customer_id)
@@ -39,7 +39,7 @@ class Customer extends Controller
 
     public function deleteCustomer($customer_id)
     {
-        $result = Customers::where('customer_id', $customer_id)->delete();
+        $result = Customers::where('id', $customer_id)->delete();
         if ($result) {
             return ['result' => 'Customer has been deleted'];
         } else {
