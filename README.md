@@ -1,2 +1,2 @@
 
-## Laravel POS For React API
+# Laravel POS For React API
