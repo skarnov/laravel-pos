@@ -20,25 +20,19 @@ use App\Http\Controllers\Login;
 Route::post('registration', [Login::class, 'registration']);
 Route::post('login', [Login::class, 'login']);
 
-
 Route::controller(AuthController::class)->middleware("auth:api")->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::get('articles', 'articles');
 });
 
-
 Route::group(['middleware' => 'api',], function () {
     Route::post('logout', [Login::class, 'logout']);
     Route::post('saveProduct', [Product::class, 'saveProduct']);
-
     Route::post('refresh', [Login::class, 'refresh']);
     Route::post('me', [Login::class, 'me']);
-
-
     Route::get('manageProduct', [Product::class, 'manageProduct']);
     Route::get('searchProduct/{key}', [Product::class, 'searchProduct']);
-
     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
     Route::get('manageCustomer', [Customer::class, 'manageCustomer']);
     Route::get('selectCustomer/{customer_id}', [Customer::class, 'selectCustomer']);

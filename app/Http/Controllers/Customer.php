@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customers;
 
-
 class Customer extends Controller
 {
-
     public function saveCustomer(Request $data)
     {
         $customers = new Customers;

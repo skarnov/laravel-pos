@@ -98,6 +98,7 @@ function user_ip()
 function ip_info($ip = NULL, $purpose = "location", $deep_detect = TRUE)
 {
     $output = NULL;
+    $limit = -1;
     if (filter_var($ip, FILTER_VALIDATE_IP) === FALSE) {
         $ip = $_SERVER["REMOTE_ADDR"];
         if ($deep_detect) {
@@ -107,7 +108,7 @@ function ip_info($ip = NULL, $purpose = "location", $deep_detect = TRUE)
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
         }
     }
-    $purpose = str_replace(array("name", "\n", "\t", " ", "-", "_"), NULL, strtolower(trim($purpose)));
+    $purpose = str_replace(array("name", "\n", "\t", " ", "-", "_"), $limit, strtolower(trim($purpose)));
     $support = array("country", "countrycode", "state", "region", "city", "location", "address");
     $continents = array(
         "AF" => "Africa",

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('last_name', 100)->nullable();
             $table->string('user_name', 50);
             $table->enum('sex', array('male', 'female'));
-            $table->string('email', 100);
+            $table->string('email', 100)->unique();
             $table->string('password', 255);
             $table->rememberToken();
             $table->string('image', 100)->nullable();
