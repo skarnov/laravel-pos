@@ -39,22 +39,13 @@ class Login extends Controller
         // $activities->created_by = '1';
 
         // $activities->save();
+        // $user_info = $this->me();
 
 
+        // debug($user_info);
 
         $credentials = $request->only('email', 'password');
-
         if ($token = $this->guard()->attempt($credentials)) {
-
-
-
-
-            // $user_info = $this->me();
-
-
-            // debug($user_info);
-
-
             return $this->respondWithToken($token);
         }
 
