@@ -22,30 +22,24 @@ class Login extends Controller
 
     public function login(Request $request)
     {
-
-
-        // $activities = new Activities;
-
-        // $activities->fk_admin_id = '1';
-        // $activities->type = 'success';
-        // $activities->name = 'Login Success';
-        // $activities->ip_address = '192.178.01.02';
-        // $activities->visitor_country = 'Bangladesh';
-        // $activities->visitor_state = 'Khulna';
-        // $activities->visitor_city = 'Magura';
-        // $activities->visitor_address = 'Goal Bathan';
-        // $activities->created_time = current_time();
-        // $activities->created_date = current_date();
-        // $activities->created_by = '1';
-
-        // $activities->save();
-        // $user_info = $this->me();
-
-
-        // debug($user_info);
-
         $credentials = $request->only('email', 'password');
         if ($token = $this->guard()->attempt($credentials)) {
+
+            $activities = new Activities;
+
+            $activities->fk_admin_id = auth()->user()->id;
+            $activities->type = 'success';
+            $activities->name = 'Login -' . auth()->user()->user_name;
+            $activities->ip_address = user_ip();
+            $activities->visitor_country =  ip_info('Visitor', 'Country');
+            $activities->visitor_state = ip_info('Visitor', 'State');
+            $activities->visitor_city = ip_info('Visitor', 'City');
+            $activities->visitor_address = ip_info('Visitor', 'Address');
+            $activities->created_time = current_time();
+            $activities->created_date = current_date();
+            $activities->created_by = auth()->user()->id;
+            $activities->save();
+
             return $this->respondWithToken($token);
         }
 
