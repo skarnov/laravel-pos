@@ -10,6 +10,10 @@ class Product extends Controller
 {
     public function saveProduct(Request $data)
     {
+
+        // $errors = $validator->errors();
+
+
         $products = new Products;
         $products->name = $data->input('name');
         $products->save();
