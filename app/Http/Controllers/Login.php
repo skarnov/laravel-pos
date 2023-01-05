@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Activities;
 use App\Models\Admins;
 
@@ -22,28 +23,46 @@ class Login extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        if ($token = $this->guard()->attempt($credentials)) {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email'   => 'required|email',
+                'password'   => 'required',
+            ],
+        );
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'msg'    => 'Form Validation Error',
+                'errors' => $validator->errors(),
+            ], 422);
+        } else {
+            $credentials = $request->only('email', 'password');
+            if ($token = $this->guard()->attempt($credentials)) {
 
-            $activities = new Activities;
+                $activities = new Activities;
 
-            $activities->fk_admin_id = auth()->user()->id;
-            $activities->type = 'success';
-            $activities->name = 'Login -' . auth()->user()->user_name;
-            $activities->ip_address = user_ip();
-            $activities->visitor_country =  ip_info('Visitor', 'Country');
-            $activities->visitor_state = ip_info('Visitor', 'State');
-            $activities->visitor_city = ip_info('Visitor', 'City');
-            $activities->visitor_address = ip_info('Visitor', 'Address');
-            $activities->created_time = current_time();
-            $activities->created_date = current_date();
-            $activities->created_by = auth()->user()->id;
-            $activities->save();
+                $activities->fk_admin_id = auth()->user()->id;
+                $activities->type = 'success';
+                $activities->name = 'Login -' . auth()->user()->user_name;
+                $activities->ip_address = user_ip();
+                $activities->visitor_country =  ip_info('Visitor', 'Country');
+                $activities->visitor_state = ip_info('Visitor', 'State');
+                $activities->visitor_city = ip_info('Visitor', 'City');
+                $activities->visitor_address = ip_info('Visitor', 'Address');
+                $activities->created_time = current_time();
+                $activities->created_date = current_date();
+                $activities->created_by = auth()->user()->id;
+                $activities->save();
 
-            return $this->respondWithToken($token);
+                return $this->respondWithToken($token);
+            }
+            
+            return response()->json([
+                'status' => 'success',
+                'msg'    => 'Okay',
+            ], 201);
         }
-
-        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     protected function respondWithToken($token)
