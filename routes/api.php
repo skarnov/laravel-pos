@@ -25,7 +25,7 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('saveProduct', [Product::class, 'saveProduct']);
 });
 
-Route::post('saveProduct', [Product::class, 'saveProduct']);
+// Route::post('saveProduct', [Product::class, 'saveProduct']);
 
 // Route::group(['middleware' => 'api',], function () {
 

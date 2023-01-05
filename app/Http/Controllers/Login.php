@@ -56,12 +56,13 @@ class Login extends Controller
                 $activities->save();
 
                 return $this->respondWithToken($token);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'msg'    => 'Credential Error',
+                    'errors' => array('Invalid Credential!'),
+                ], 422);
             }
-            
-            return response()->json([
-                'status' => 'success',
-                'msg'    => 'Okay',
-            ], 201);
         }
     }
 
