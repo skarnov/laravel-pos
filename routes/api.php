@@ -23,6 +23,7 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::post('saveProduct', [Product::class, 'saveProduct']);
+    Route::post('manageProduct', [Product::class, 'manageProduct']);
 });
 
 // Route::post('saveProduct', [Product::class, 'saveProduct']);
