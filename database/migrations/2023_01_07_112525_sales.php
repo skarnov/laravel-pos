@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 50);
-            $table->string('mobile', 20)>nullable();
-            $table->string('image', 100)->nullable();
+            $table->foreignId('fk_customer_id')->nullable();
+            $table->decimal('income_amount', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->decimal('discount', 10, 2)->nullable();
+            $table->decimal('grand_total', 10, 2);
+            $table->decimal('paid_amount', 10, 2);
             $table->decimal('sale_due', 10, 2)->nullable();
-            $table->decimal('total_buy', 10, 2)->nullable();
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('customers');
+        Schema::drop('sales');
     }
 };
