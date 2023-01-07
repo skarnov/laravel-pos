@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sale_history', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->year('year')->nullable();
+            $table->decimal('year', 10, 2)->nullable();
             $table->decimal('january', 10, 2)->nullable();
             $table->decimal('february', 10, 2)->nullable();
             $table->decimal('march', 10, 2)->nullable();
