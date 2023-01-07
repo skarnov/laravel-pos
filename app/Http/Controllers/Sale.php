@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customers;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Activities;
+use App\Models\Sales;
+use App\Models\SaleDetails;
+use App\Models\SaleHistory;
+use App\Models\IncomeHistory;
 
-class Customer extends Controller
+class Product extends Controller
 {
-    public function saveCustomer(Request $request)
+    public function saveProduct(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -22,7 +27,7 @@ class Customer extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         } else {
-            $ifExists = Customers::where('name', $request->input('name'))->where('created_by', auth()->user()->id)->first();
+            $ifExists = Products::where('name', $request->input('name'))->where('created_by', auth()->user()->id)->first();
             if ($ifExists) :
                 return response()->json([
                     'status' => 'error',
@@ -34,7 +39,7 @@ class Customer extends Controller
 
                 $activities->fk_admin_id = auth()->user()->id;
                 $activities->type = 'success';
-                $activities->name = 'Customer Created -' . auth()->user()->user_name;
+                $activities->name = 'Product Created -' . auth()->user()->user_name;
                 $activities->ip_address = user_ip();
                 $activities->visitor_country =  ip_info('Visitor', 'Country');
                 $activities->visitor_state = ip_info('Visitor', 'State');
@@ -45,45 +50,38 @@ class Customer extends Controller
                 $activities->created_by = auth()->user()->id;
                 $activities->save();
 
-                $customers = new Customers;
-                $customers->name = $request->input('name');
-                $customers->mobile = $request->input('mobile');
-                $customers->created_time = current_time();
-                $customers->created_date = current_date();
-                $customers->created_by = auth()->user()->id;
-                $customers->save();
+                $products = new Products;
+                $products->name = $request->input('name');
+                $products->created_time = current_time();
+                $products->created_date = current_date();
+                $products->created_by = auth()->user()->id;
+                $products->save();
 
-                return $customers;
+                return $products;
             endif;
         }
     }
 
-    public function manageCustomer()
+    public function manageProduct()
     {
-        // return Customers::orderByDesc('id')->get();
+        return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
-    public function selectCustomer($customer_id)
+    public function searchProduct($key)
     {
-        // return Customers::find($customer_id);
+        return Products::where('name', 'like', "%$key%")->get();
     }
 
-    public function updateCustomer(Request $data)
+    public function editProduct($id)
     {
-        // $customers = new Customers;
-        // $customers->name = $data->input('name');
-        // $customers->image = $data->file('file')->store('customers');
-        // $customers->save();
-        // return $customers;
+        
+    }
+    
+    public function deleteProduct($id)
+    {
+        
+// if not associated with STOCK
+
     }
 
-    public function deleteCustomer($customer_id)
-    {
-        // $result = Customers::where('id', $customer_id)->delete();
-        // if ($result) {
-        //     return ['result' => 'Customer has been deleted'];
-        // } else {
-        //     return ['result' => 'Failed'];
-        // }
-    }
 }

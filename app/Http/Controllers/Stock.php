@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Activities;
-use App\Models\Products;
+use App\Models\Stocks;
+use App\Models\StockHistory;
 
-class Product extends Controller
+class Stock extends Controller
 {
     public function saveProduct(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'name'   => 'required',
+                'product'   => 'required',
+                'buy_price'   => 'required|decimal',
+                'sale_price'   => 'required|decimal',
+                'quantity'   => 'required|numeric',
             ],
         );
         if ($validator->fails()) {
@@ -24,12 +28,16 @@ class Product extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         } else {
-            $ifExists = Products::where('name', $request->input('name'))->where('created_by', auth()->user()->id)->first();
+            $ifExists = Stocks::where('fk_product_id', $request->input('product'))
+                ->where('buy_price', $request->input('buy_price'))
+                ->where('sale_price', $request->input('sale_price'))
+                ->where('created_by', auth()->user()->id)
+                ->first();
             if ($ifExists) :
                 return response()->json([
                     'status' => 'error',
                     'msg'    => 'Table Unique Error',
-                    'errors' => array('Already Saved!'),
+                    'errors' => array('Already Exists! Please Edit The Stock, The Stock ID- '.$ifExists->id),
                 ], 422);
             else :
                 $activities = new Activities;
@@ -47,38 +55,41 @@ class Product extends Controller
                 $activities->created_by = auth()->user()->id;
                 $activities->save();
 
-                $products = new Products;
-                $products->name = $request->input('name');
-                $products->created_time = current_time();
-                $products->created_date = current_date();
-                $products->created_by = auth()->user()->id;
-                $products->save();
+                $stocks = new Stocks;
+                $stocks->fk_product_id = $request->input('product');
+                $stocks->barcode = $request->input('barcode');
+                $stocks->sku = $request->input('sku');
+                $stocks->buy_price = $request->input('buy_price');
+                $stocks->sale_price = $request->input('sale_price');
+                $stocks->quantity = $request->input('quantity');
+                $stocks->created_time = current_time();
+                $stocks->created_date = current_date();
+                $stocks->created_by = auth()->user()->id;
+                $stocks->save();
 
-                return $products;
+                return $stocks;
             endif;
         }
     }
 
-    public function manageProduct()
+    public function manageStock()
     {
         return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
-    public function searchProduct($key)
+    public function searchStock($key)
     {
         return Products::where('name', 'like', "%$key%")->get();
     }
 
-    public function editProduct($id)
+    public function editStock($id)
     {
-        
-    }
-    
-    public function deleteProduct($id)
-    {
-        
-// if not associated with STOCK
-
     }
 
+    public function deleteStock($id)
+    {
+
+        // if not associated with STOCK
+
+    }
 }
