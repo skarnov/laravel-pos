@@ -69,13 +69,16 @@ class Product extends Controller
         return Products::find($id);
     }
 
-    public function updateProduct(Request $data)
+    public function updateProduct(Request $request)
     {
-        // $customers = new Customers;
-        // $customers->name = $data->input('name');
-        // $customers->image = $data->file('file')->store('customers');
-        // $customers->save();
-        // return $customers;
+        $products = Products::find($request->input('id'));
+        $products->name = $request->input('name');
+        $products->modified_time = current_time();
+        $products->modified_date = current_date();
+        $products->modified_by = auth()->user()->id;
+        $products->save();
+
+        return $products;
     }
 
     public function deleteProduct($id)

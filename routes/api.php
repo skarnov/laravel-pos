@@ -25,11 +25,13 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('saveProduct', [Product::class, 'saveProduct']);
     Route::post('manageProduct', [Product::class, 'manageProduct']);
 
-    Route::get('selectProduct/{id}', [Product::class, 'selectProduct']);
+    Route::post('selectProduct/{id}', [Product::class, 'selectProduct']);
 
+
+  
 });
 
-
+Route::post('updateProduct', [Product::class, 'updateProduct']);
 
 // Route::group(['middleware' => 'api',], function () {
 
