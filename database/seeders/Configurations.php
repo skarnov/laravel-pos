@@ -20,10 +20,6 @@ class Configurations extends Seeder
             'config_setting' => '',
         ]);
         DB::table('configurations')->insert([
-            'config_name' => 'meta_description',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
             'config_name' => 'website_favicon',
             'config_setting' => '',
         ]);
@@ -32,31 +28,7 @@ class Configurations extends Seeder
             'config_setting' => '',
         ]);
         DB::table('configurations')->insert([
-            'config_name' => 'company_address',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'company_phone',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'company_email',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'copyright_info',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
             'config_name' => 'contact_email',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'dashboard_favicon',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'dashboard_logo',
             'config_setting' => '',
         ]);
         DB::table('configurations')->insert([
@@ -93,34 +65,6 @@ class Configurations extends Seeder
         ]);
         DB::table('configurations')->insert([
             'config_name' => 'currency_sign',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'page_image',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'facebook_link',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'linkedin_link',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'instagram_link',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'pinterest_link',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'youtube_link',
-            'config_setting' => '',
-        ]);
-        DB::table('configurations')->insert([
-            'config_name' => 'google_analytics',
             'config_setting' => '',
         ]);
     }

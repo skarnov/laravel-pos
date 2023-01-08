@@ -10,7 +10,7 @@ use App\Models\StockHistory;
 
 class Stock extends Controller
 {
-    public function saveProduct(Request $request)
+    public function saveStock(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -56,6 +56,7 @@ class Stock extends Controller
                 $activities->save();
 
                 $stocks = new Stocks;
+
                 $stocks->fk_product_id = $request->input('product');
                 $stocks->barcode = $request->input('barcode');
                 $stocks->sku = $request->input('sku');
@@ -66,6 +67,20 @@ class Stock extends Controller
                 $stocks->created_date = current_date();
                 $stocks->created_by = auth()->user()->id;
                 $stocks->save();
+
+
+// CHECK IF EXISTES THE ROW
+
+                $stock_history = new StockHistory;
+
+                $stock_history->total_amount = $request->input('total_amount');
+                $stock_history->year = date('Y');
+
+
+                $stock_history->created_time = current_time();
+                $stock_history->created_date = current_date();
+                $stock_history->created_by = auth()->user()->id;
+                $stock_history->save();
 
                 return $stocks;
             endif;

@@ -69,16 +69,32 @@ class Product extends Controller
         return Products::where('name', 'like', "%$key%")->get();
     }
 
-    public function editProduct($id)
+    public function selectProduct($id)
     {
-        
+        // return Products::find($id);
     }
-    
+
+    public function updateProduct(Request $data)
+    {
+        // $customers = new Customers;
+        // $customers->name = $data->input('name');
+        // $customers->image = $data->file('file')->store('customers');
+        // $customers->save();
+        // return $customers;
+    }
+
     public function deleteProduct($id)
     {
-        
-// if not associated with STOCK
+
+        // if not associated with STOCK
+
+
+        // $result = Customers::where('id', $customer_id)->delete();
+        // if ($result) {
+        //     return ['result' => 'Customer has been deleted'];
+        // } else {
+        //     return ['result' => 'Failed'];
+        // }
 
     }
-
 }

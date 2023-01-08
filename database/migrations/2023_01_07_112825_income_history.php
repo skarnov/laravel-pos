@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('income_history', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->decimal('year', 10, 2)->nullable();
+            $table->decimal('total_amount', 10, 2)->nullable();
+            $table->year('year')->nullable();
             $table->decimal('january', 10, 2)->nullable();
             $table->decimal('february', 10, 2)->nullable();
             $table->decimal('march', 10, 2)->nullable();

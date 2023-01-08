@@ -10,9 +10,9 @@ use App\Models\SaleDetails;
 use App\Models\SaleHistory;
 use App\Models\IncomeHistory;
 
-class Product extends Controller
+class Sale extends Controller
 {
-    public function saveProduct(Request $request)
+    public function saveSale(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -62,22 +62,31 @@ class Product extends Controller
         }
     }
 
-    public function manageProduct()
+    public function manageSale()
     {
         return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
-    public function searchProduct($key)
+    public function searchSale($key)
     {
         return Products::where('name', 'like', "%$key%")->get();
     }
 
-    public function editProduct($id)
+    public function editSale($id)
     {
         
     }
+
+    public function updateSale(Request $data)
+    {
+        // $customers = new Customers;
+        // $customers->name = $data->input('name');
+        // $customers->image = $data->file('file')->store('customers');
+        // $customers->save();
+        // return $customers;
+    }
     
-    public function deleteProduct($id)
+    public function deleteSale($id)
     {
         
 // if not associated with STOCK

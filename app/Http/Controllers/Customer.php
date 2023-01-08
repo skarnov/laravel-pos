@@ -63,9 +63,9 @@ class Customer extends Controller
         // return Customers::orderByDesc('id')->get();
     }
 
-    public function selectCustomer($customer_id)
+    public function selectCustomer($id)
     {
-        // return Customers::find($customer_id);
+        // return Customers::find($id);
     }
 
     public function updateCustomer(Request $data)
@@ -77,9 +77,9 @@ class Customer extends Controller
         // return $customers;
     }
 
-    public function deleteCustomer($customer_id)
+    public function deleteCustomer($id)
     {
-        // $result = Customers::where('id', $customer_id)->delete();
+        // $result = Customers::where('id', $id)->delete();
         // if ($result) {
         //     return ['result' => 'Customer has been deleted'];
         // } else {
