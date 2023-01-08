@@ -24,6 +24,9 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('refresh', 'refresh');
     Route::post('saveProduct', [Product::class, 'saveProduct']);
     Route::post('manageProduct', [Product::class, 'manageProduct']);
+
+    Route::get('selectProduct/{id}', [Product::class, 'selectProduct']);
+
 });
 
 
@@ -33,7 +36,7 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
 
 
 
-//     Route::get('searchProduct/{key}', [Product::class, 'searchProduct']);
+
 //     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
 //     Route::get('manageCustomer', [Customer::class, 'manageCustomer']);
 //     Route::get('selectCustomer/{customer_id}', [Customer::class, 'selectCustomer']);

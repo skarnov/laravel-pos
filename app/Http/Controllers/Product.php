@@ -64,14 +64,9 @@ class Product extends Controller
         return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
-    public function searchProduct($key)
-    {
-        return Products::where('name', 'like', "%$key%")->get();
-    }
-
     public function selectProduct($id)
     {
-        // return Products::find($id);
+        return Products::find($id);
     }
 
     public function updateProduct(Request $data)
