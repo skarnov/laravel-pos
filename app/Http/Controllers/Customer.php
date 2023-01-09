@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Activities;
 use App\Models\Customers;
 
 class Customer extends Controller
@@ -13,6 +15,7 @@ class Customer extends Controller
             $request->all(),
             [
                 'name'   => 'required',
+                'mobile'   => 'numeric',
             ],
         );
         if ($validator->fails()) {
