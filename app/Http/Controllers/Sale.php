@@ -64,7 +64,7 @@ class Sale extends Controller
 
     public function manageSale()
     {
-        return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
+        return Sales::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
     public function searchSale($key)

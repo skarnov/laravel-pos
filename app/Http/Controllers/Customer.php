@@ -63,7 +63,7 @@ class Customer extends Controller
 
     public function manageCustomer()
     {
-        // return Customers::orderByDesc('id')->get();
+        return Customers::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
     public function selectCustomer($id)

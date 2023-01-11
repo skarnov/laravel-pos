@@ -29,26 +29,16 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('manageProduct', [Product::class, 'manageProduct']);
     Route::post('selectProduct/{id}', [Product::class, 'selectProduct']);
     Route::post('updateProduct', [Product::class, 'updateProduct']);
+    Route::post('deleteProduct/{id}', [Product::class, 'deleteProduct']);
 
     Route::post('saveStock', [Stock::class, 'saveStock']);
     Route::post('manageStock', [Stock::class, 'manageStock']);
 
     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
+    Route::post('manageCustomer', [Customer::class, 'manageCustomer']);
+    Route::post('selectCustomer/{id}', [Customer::class, 'selectCustomer']);
+    Route::post('updateCustomer', [Customer::class, 'updateCustomer']);
+    Route::post('deleteCustomer/{id}', [Customer::class, 'deleteCustomer']);
   
+    Route::post('manageSale', [Sale::class, 'manageSale']);
 });
-
-
-
-
-// Route::group(['middleware' => 'api',], function () {
-
-
-
-
-
-//     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
-//     Route::get('manageCustomer', [Customer::class, 'manageCustomer']);
-//     Route::get('selectCustomer/{customer_id}', [Customer::class, 'selectCustomer']);
-//     Route::post('updateCustomer', [Customer::class, 'updateCustomer']);
-//     Route::get('deleteCustomer/{customer_id}', [Customer::class, 'deleteCustomer']);
-// });
