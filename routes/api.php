@@ -31,6 +31,7 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('updateProduct', [Product::class, 'updateProduct']);
 
     Route::post('saveStock', [Stock::class, 'saveStock']);
+    Route::post('manageStock', [Stock::class, 'manageStock']);
 
     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
   

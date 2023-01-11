@@ -16,8 +16,8 @@ class Stock extends Controller
             $request->all(),
             [
                 'product'   => 'required',
-                'buy_price'   => 'required|decimal',
-                'sale_price'   => 'required|decimal',
+                'buy_price'   => 'required|numeric',
+                'sale_price'   => 'required|numeric',
                 'quantity'   => 'required|numeric',
             ],
         );
@@ -57,7 +57,7 @@ class Stock extends Controller
 
                 $stocks = new Stocks;
 
-                $stocks->fk_product_id = '1';
+                $stocks->fk_product_id = $request->input('product');
                 $stocks->barcode = $request->input('barcode');
                 $stocks->sku = $request->input('sku');
                 $stocks->buy_price = $request->input('buy_price');
@@ -66,7 +66,7 @@ class Stock extends Controller
                 $stocks->created_time = current_time();
                 $stocks->created_date = current_date();
                 $stocks->created_by = auth()->user()->id;
-                return $stocks->save();
+                $stocks->save();
 
                 $ifExists = StockHistory::where('year', date('Y'))->where('created_by', auth()->user()->id)->first();
                 if ($ifExists) :
@@ -103,12 +103,12 @@ class Stock extends Controller
                     $StockHistory->modified_time = current_time();
                     $StockHistory->modified_date = current_date();
                     $StockHistory->modified_by = auth()->user()->id;
-                    $StockHistory->save();
+                    return $StockHistory->save();
                 else :
-                    $stock_history = new StockHistory;
+                    $StockHistory = new StockHistory;
 
-                    $stock_history->total_amount = $request->input('buy_price');
-                    $stock_history->year = date('Y');
+                    $StockHistory->total_amount = $request->input('buy_price');
+                    $StockHistory->year = date('Y');
 
                     if (date('m') == 1) :
                         $StockHistory->january = $request->input('buy_price');
@@ -136,10 +136,10 @@ class Stock extends Controller
                         $StockHistory->december = $request->input('buy_price');
                     endif;
 
-                    $stock_history->created_time = current_time();
-                    $stock_history->created_date = current_date();
-                    $stock_history->created_by = auth()->user()->id;
-                    $stock_history->save();
+                    $StockHistory->created_time = current_time();
+                    $StockHistory->created_date = current_date();
+                    $StockHistory->created_by = auth()->user()->id;
+                    return $StockHistory->save();
                 endif;
             endif;
         }
@@ -147,7 +147,11 @@ class Stock extends Controller
 
     public function manageStock()
     {
-        return Products::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
+        $allStocks = Stocks::leftJoin('products' , 'stocks.fk_product_id', '=', 'products.id')
+        ->where('stocks.created_by', auth()->user()->id)
+        ->orderByDesc('stocks.id')
+        ->get();
+        return $allStocks;
     }
 
     public function searchStock($key)
@@ -155,14 +159,11 @@ class Stock extends Controller
         return Products::where('name', 'like', "%$key%")->get();
     }
 
-    public function editStock($id)
+    public function selectStock($id)
     {
     }
 
     public function deleteStock($id)
     {
-
-        // if not associated with STOCK
-
     }
 }
