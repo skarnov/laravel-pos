@@ -67,7 +67,7 @@ class Product extends Controller
 
     public function selectProduct($id)
     {
-        return Products::find($id);
+        return Products::where('created_by', auth()->user()->id)->find($id);
     }
 
     public function updateProduct(Request $request)

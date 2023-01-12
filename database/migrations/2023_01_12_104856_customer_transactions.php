@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('customer_transactons', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('fk_customer_id')->nullable();
-            $table->decimal('income_amount', 10, 2);
-            $table->decimal('total', 10, 2);
-            $table->decimal('discount', 10, 2)->nullable();
-            $table->decimal('grand_total', 10, 2);
-            $table->decimal('paid_amount', 10, 2);
-            $table->decimal('sale_due', 10, 2)->nullable();
-            $table->text('comments')->nullable();
+            $table->foreignId('fk_customer_id');
+            $table->decimal('amount', 10, 2);
+            $table->decimal('paid', 10, 2);
+            $table->decimal('due', 10, 2);
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();
@@ -39,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('sales');
+        Schema::drop('customer_transactons');
     }
 };

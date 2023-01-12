@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sale_history', function (Blueprint $table) {
+        Schema::create('income_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->decimal('total_amount', 10, 2)->nullable();
             $table->year('year')->nullable();
@@ -45,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('sale_history');
+        Schema::drop('income_histories');
     }
 };
