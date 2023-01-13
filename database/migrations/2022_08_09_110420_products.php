@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name', 100);
             $table->string('image', 100)->nullable();
+            $table->integer('sale_count')->nullable();
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();

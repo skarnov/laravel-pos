@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('sku', 20)->nullable();
             $table->decimal('buy_price', 10, 2);
             $table->decimal('sale_price', 10, 2);
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
             $table->time('created_time')->nullable();
             $table->date('created_date')->nullable();
             $table->smallInteger('created_by')->nullable();

@@ -154,7 +154,8 @@ class Stock extends Controller
 
     public function manageStock()
     {
-        $allStocks = Stocks::leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
+        $allStocks = Stocks::select('stocks.*', 'products.name')
+            ->leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
             ->where('stocks.created_by', auth()->user()->id)
             ->orderByDesc('stocks.id')
             ->get();
@@ -163,59 +164,63 @@ class Stock extends Controller
 
     public function selectStock($id)
     {
-        return Stocks::where('created_by', auth()->user()->id)->find($id);
+        return Stocks::select('stocks.*', 'products.name')
+            ->leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
+            ->where('stocks.created_by', auth()->user()->id)
+            ->find($id);
     }
 
     public function updateStock(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'quantity'   => 'required|numeric',
-            ],
-        );
-        if ($validator->fails()) {
+        $stockId = $request->input('id');
+        $barcode = $request->input('barcode');
+        $sku = $request->input('sku');
+        $quantity = $request->input('quantity');
+
+        if ($quantity < 1) :
             return response()->json([
                 'status' => 'error',
-                'msg'    => 'Form Validation Error',
-                'errors' => $validator->errors(),
+                'msg'    => 'Quantity can not be null',
             ], 422);
-        } else {
-            $stock_info = Stocks::where('id', $id)->first();
-            $previous_quantity = $stock_info->quantity;
-            $buy_price = $stock_info->buy_price;
+        endif;
 
-            $stocks =  Stocks::find($request->input('id'));
+        $stock_info = Stocks::where('id', $request->input('id'))->first();
+        $previous_quantity = $stock_info->quantity;
+        $buy_price = $stock_info->buy_price;
 
-            $stocks->barcode = $request->input('barcode');
-            $stocks->sku = $request->input('sku');
-            $stocks->quantity = $request->input('quantity');
-            $stocks->modified_time = current_time();
-            $stocks->modified_date = current_date();
-            $stocks->modified_by = auth()->user()->id;
-            $stocks->save();
+        $stocks =  Stocks::find($stockId);
 
-            $activities = new Activities;
+        $stocks->barcode = $barcode;
+        $stocks->sku = $sku;
+        $stocks->quantity = $quantity;
+        $stocks->modified_time = current_time();
+        $stocks->modified_date = current_date();
+        $stocks->modified_by = auth()->user()->id;
+        $stocks->save();
 
-            $activities->fk_admin_id = auth()->user()->id;
-            $activities->type = 'success';
-            $activities->name = 'Stock Updated. ID -' .  $request->input('id');
-            $activities->ip_address = user_ip();
-            $activities->visitor_country =  ip_info('Visitor', 'Country');
-            $activities->visitor_state = ip_info('Visitor', 'State');
-            $activities->visitor_city = ip_info('Visitor', 'City');
-            $activities->visitor_address = ip_info('Visitor', 'Address');
-            $activities->created_time = current_time();
-            $activities->created_date = current_date();
-            $activities->created_by = auth()->user()->id;
-            $activities->save();
+        $activities = new Activities;
 
-            $quantity_increase = $request->input('quantity') - $previous_quantity;
+        $activities->fk_admin_id = auth()->user()->id;
+        $activities->type = 'success';
+        $activities->name = 'Stock Updated. ID -' .  $stockId;
+        $activities->ip_address = user_ip();
+        $activities->visitor_country =  ip_info('Visitor', 'Country');
+        $activities->visitor_state = ip_info('Visitor', 'State');
+        $activities->visitor_city = ip_info('Visitor', 'City');
+        $activities->visitor_address = ip_info('Visitor', 'Address');
+        $activities->created_time = current_time();
+        $activities->created_date = current_date();
+        $activities->created_by = auth()->user()->id;
+        $activities->save();
 
-            if ($quantity_increase) :
+        $quantity_increase = $quantity - $previous_quantity;
+        
+        if ($previous_quantity < $quantity) :
+            $ifExists = StockHistory::where('year', date('Y'))->where('created_by', auth()->user()->id)->first();
+            if ($ifExists) :
                 $StockHistory = StockHistory::find($ifExists->id);
-                $stockIn = $buy_price * $quantity_increase;
 
+                $stockIn = $buy_price * $quantity_increase;
                 $StockHistory->total_amount += $stockIn;
 
                 if (date('m') == 1) :
@@ -250,14 +255,52 @@ class Stock extends Controller
 
                 return $StockHistory->save();
             else :
-                return $stocks;
+                $StockHistory = new StockHistory;
+
+                $stockIn = $buy_price * $quantity_increase;
+                $StockHistory->total_amount = $stockIn;
+                $StockHistory->year = date('Y');
+
+                if (date('m') == 1) :
+                    $StockHistory->january = $stockIn;
+                elseif (date('m') == 2) :
+                    $StockHistory->february = $stockIn;
+                elseif (date('m') == 3) :
+                    $StockHistory->march = $stockIn;
+                elseif (date('m') == 4) :
+                    $StockHistory->april = $stockIn;
+                elseif (date('m') == 5) :
+                    $StockHistory->may = $stockIn;
+                elseif (date('m') == 6) :
+                    $StockHistory->june = $stockIn;
+                elseif (date('m') == 7) :
+                    $StockHistory->july = $stockIn;
+                elseif (date('m') == 8) :
+                    $StockHistory->august = $stockIn;
+                elseif (date('m') == 9) :
+                    $StockHistory->september = $stockIn;
+                elseif (date('m') == 10) :
+                    $StockHistory->october = $stockIn;
+                elseif (date('m') == 11) :
+                    $StockHistory->november = $stockIn;
+                elseif (date('m') == 12) :
+                    $StockHistory->december = $stockIn;
+                endif;
+
+                $StockHistory->created_time = current_time();
+                $StockHistory->created_date = current_date();
+                $StockHistory->created_by = auth()->user()->id;
+
+                return $StockHistory->save();
             endif;
-        }
+        else :
+            return $stocks;
+        endif;
     }
 
     public function deleteStock($id)
     {
-        $ifAssocSale = SaleDetails::where('fk_stock_id', $id)->where('created_by', auth()->user()->id)->first();
+        $ifAssocSale = SaleDetails::where('fk_stock_id', $id)->first();
         if ($ifAssocSale) :
             return response()->json([
                 'status' => 'error',

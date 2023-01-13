@@ -69,10 +69,10 @@ class Customer extends Controller
 
     public function selectCustomer($id)
     {
-        return Customers::find($id);
+        return Customers::where('created_by', auth()->user()->id)->find($id);
     }
 
-    public function updateCustomer(Request $data)
+    public function updateCustomer(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -148,7 +148,7 @@ class Customer extends Controller
             $activities->created_by = auth()->user()->id;
             $activities->save();
 
-            Stocks::where('id', $id)->delete();
+            Customers::where('id', $id)->delete();
             return response()->json([
                 'msg'    => 'Deleted',
             ], 200);
