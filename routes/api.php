@@ -36,6 +36,7 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('manageStock', [Stock::class, 'manageStock']);
     Route::post('selectStock/{id}', [Stock::class, 'selectStock']);
     Route::post('updateStock', [Stock::class, 'updateStock']);
+    Route::post('findStock/{query}', [Stock::class, 'findStock']);
     Route::post('deleteStock/{id}', [Stock::class, 'deleteStock']);
 
     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);

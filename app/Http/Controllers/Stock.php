@@ -214,7 +214,7 @@ class Stock extends Controller
         $activities->save();
 
         $quantity_increase = $quantity - $previous_quantity;
-        
+
         if ($previous_quantity < $quantity) :
             $ifExists = StockHistory::where('year', date('Y'))->where('created_by', auth()->user()->id)->first();
             if ($ifExists) :
@@ -296,6 +296,16 @@ class Stock extends Controller
         else :
             return $stocks;
         endif;
+    }
+
+    public function findStock($query)
+    {
+        return Stocks::select('stocks.*', 'products.name')
+            ->leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
+            ->where('barcode', 'LIKE', "%{$query}%")
+            ->orWhere('sku', 'LIKE', "%{$query}%")
+            ->where('stocks.created_by', auth()->user()->id)
+            ->first();
     }
 
     public function deleteStock($id)
