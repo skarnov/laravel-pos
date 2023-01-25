@@ -34,9 +34,9 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
 
     Route::post('saveStock', [Stock::class, 'saveStock']);
     Route::post('manageStock', [Stock::class, 'manageStock']);
+    Route::post('availableStock', [Stock::class, 'availableStock']);
     Route::post('selectStock/{id}', [Stock::class, 'selectStock']);
     Route::post('updateStock', [Stock::class, 'updateStock']);
-    Route::post('findStock/{query}', [Stock::class, 'findStock']);
     Route::post('deleteStock/{id}', [Stock::class, 'deleteStock']);
 
     Route::post('saveCustomer', [Customer::class, 'saveCustomer']);
@@ -45,6 +45,16 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('updateCustomer', [Customer::class, 'updateCustomer']);
     Route::post('deleteCustomer/{id}', [Customer::class, 'deleteCustomer']);
 
+    Route::post('cart', [Sale::class, 'cart']);
+    Route::post('selectCart/{id}', [Sale::class, 'selectCart']);
+    Route::post('findStock/{query}', [Sale::class, 'findStock']);
+    Route::post('updateCartIncrease/{id}', [Sale::class, 'updateCartIncrease']);
+    Route::post('updateCartDecrease/{id}', [Sale::class, 'updateCartDecrease']);
+    Route::post('deleteCart/{id}', [Sale::class, 'deleteCart']);
+
+
+
+    
     Route::post('saveSale', [Sale::class, 'saveSale']);
     Route::post('manageSale', [Sale::class, 'manageSale']);
     Route::post('selectSale/{id}', [Sale::class, 'selectSale']);

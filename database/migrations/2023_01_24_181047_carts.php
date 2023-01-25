@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sale_details', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('fk_sale_id');
-            $table->foreignId('fk_customer_id')->nullable();
-            $table->foreignId('fk_stock_id')->nullable();
+            $table->foreignId('fk_stock_id');
             $table->string('name', 100);
             $table->integer('quantity');
-            $table->decimal('unit_price', 10, 2);
-            $table->decimal('subtotal', 10, 2);
+            $table->decimal('unit', 10, 2);
+            $table->smallInteger('created_by');
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop('sale_details');
+        Schema::drop('carts');
     }
 };

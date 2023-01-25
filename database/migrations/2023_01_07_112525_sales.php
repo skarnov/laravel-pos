@@ -17,10 +17,12 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('fk_customer_id')->nullable();
             $table->decimal('income_amount', 10, 2);
+            $table->decimal('net_income', 10, 2);
             $table->decimal('total', 10, 2);
             $table->decimal('discount', 10, 2)->nullable();
             $table->decimal('grand_total', 10, 2);
             $table->decimal('paid_amount', 10, 2);
+            $table->integer('sale_quantity');
             $table->decimal('sale_due', 10, 2)->nullable();
             $table->text('comments')->nullable();
             $table->time('created_time')->nullable();

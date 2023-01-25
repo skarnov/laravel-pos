@@ -162,6 +162,17 @@ class Stock extends Controller
         return $allStocks;
     }
 
+    public function availableStock()
+    {
+        $allStocks = Stocks::select('stocks.*', 'products.name')
+            ->leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
+            ->where('stocks.quantity', '>=', 1)
+            ->where('stocks.created_by', auth()->user()->id)
+            ->orderByDesc('stocks.id')
+            ->get();
+        return $allStocks;
+    }
+
     public function selectStock($id)
     {
         return Stocks::select('stocks.*', 'products.name')
@@ -296,16 +307,6 @@ class Stock extends Controller
         else :
             return $stocks;
         endif;
-    }
-
-    public function findStock($query)
-    {
-        return Stocks::select('stocks.*', 'products.name')
-            ->leftJoin('products', 'stocks.fk_product_id', '=', 'products.id')
-            ->where('barcode', 'LIKE', "%{$query}%")
-            ->orWhere('sku', 'LIKE', "%{$query}%")
-            ->where('stocks.created_by', auth()->user()->id)
-            ->first();
     }
 
     public function deleteStock($id)
