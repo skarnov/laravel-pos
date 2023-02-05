@@ -408,6 +408,35 @@ class Sale extends Controller
         return Sales::where('created_by', auth()->user()->id)->orderByDesc('id')->get();
     }
 
+    public function lastSale()
+    {
+        $sale_info = Sales::where('created_by', auth()->user()->id)->orderByDesc('id')->limit(1)->first();
+
+        if ($sale_info->fk_customer_id) :
+            $customer_info = Customers::where('id', $sale_info->fk_customer_id)->where('created_by', auth()->user()->id)->first();
+        endif;
+
+        $sale_details = SaleDetails::where('fk_sale_id', $sale_info->id)->get();
+        return response()->json([
+            'saleInfo'    => $sale_info,
+            'saleDetails'    => $sale_details,
+            'customerInfo'    => $customer_info,
+        ], 200);
+    }
+
+    
+    // public function selectSale($id)
+    // {
+    //     $sale_info = Sales::where('sale_id', $id)->where('created_by', auth()->user()->id)->orderByDesc('id')->limit(1)->first();
+    //     $sale_details = SaleDetails::where('fk_sale_id', $id)->get();
+    //     return response()->json([
+    //         'saleInfo'    => $sale_info,
+    //         'saleDetails'    => $sale_details,
+    //     ], 200);
+    // }
+
+
+
     public function searchSale($key)
     {
         return Products::where('name', 'like', "%$key%")->get();
