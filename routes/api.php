@@ -55,8 +55,9 @@ Route::controller(AuthController::class)->middleware("auth:api")->group(function
     Route::post('saveSale', [Sale::class, 'saveSale']);
     Route::post('manageSale', [Sale::class, 'manageSale']);
     Route::post('lastSale', [Sale::class, 'lastSale']);
+    Route::post('selectSale/{id}', [Sale::class, 'selectSale']);
+
 
     
-    Route::post('selectSale/{id}', [Sale::class, 'selectSale']);
     Route::post('deleteSale/{id}', [Sale::class, 'deleteSale']);
 });
